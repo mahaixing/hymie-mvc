@@ -1,0 +1,15 @@
+<phpunit bootstrap="tests/autoload.php">
+    <testsuites>
+        <testsuite name="classes">
+            <directory>tests/hymie</directory>
+        </testsuite>
+        <testsuite name="app">
+            <directory>tests/application</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory>src</directory>
+        </whitelist>
+    </filter>
+</phpunit>

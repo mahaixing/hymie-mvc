@@ -1,0 +1,72 @@
+#!/usr/bin/env php
+
+<?php
+
+error_reporting(-1);
+
+if (!preg_match('/cli/i', php_sapi_name())) {
+    header('HTTP/1.1 500 Internal Server Error.', true, 500);
+    echo 'The script need cli environment.';
+    exit(1); // EXIT_ERROR
+}
+
+if (version_compare(PHP_VERSION, '7.1.0') < 0) {
+    die('The script need php version greater then 7.1. ');
+    exit(1);
+}
+
+function help()
+{
+    $help_str = <<<EOT
+Useage: hymie init [runtime_dir]
+  1. Initialize project and runtime directories in current directory.
+  2. If runtime_dir is given then Initialize runtime dir in specified 
+     target directory.
+
+EOT;
+    fwrite(STDOUT, $help_str);
+}
+
+if (count($argv) < 2) {
+    help();
+    exit(1);
+}
+
+define('DS', DIRECTORY_SEPARATOR);
+
+$app_dirs = [
+    'app',
+    'config',
+];
+
+$runtime_dirs = [
+    'runtime'.DS.'cache',
+    'runtime'.DS.'log',
+    'runtime'.DS.'run',
+];
+
+$project_root = realpath('.').DS;
+
+function create_app_dirs()
+{
+    global $app_dirs, $project_root;
+
+    foreach ($app_dirs as $k => $v) {
+        fwrite(STDOUT, "\r\n Creating application directories.");
+        if (!file_exists($project_root.$v)) {
+            mkdir($project_root.$v, 0755, true);
+            fwrite(STDOUT, "\r\n created directory ".$project_root.$v.'. ');
+        } else {
+            fwrite(STDOUT, "\r\n directory '".$project_root.$v."' existed, igonre it.");
+        }
+    }
+
+    fwrite(STDOUT, "\r\n done. \r\n");
+}
+
+function create_runtime_dirs($target_root)
+{
+    global $runtime_dirs;
+    foreach ($runtime_dirs as $k => $v) {
+    }
+}
